@@ -6,7 +6,7 @@ Some stuff for changing a display´s input source by using DDC
 The projects in this repository are tiny wrappers of a tool named [ControlMyMonitor](https://www.nirsoft.net/utils/control_my_monitor.html), written by Nir Sofer (NirSoft).
 
 The wrappers are:
-- A tiny .NET 6 class library, offering the DDC VCP 60 functionality for .NET projects.
+- A tiny .NET 6 class library, offering the DDC VCP 60 functionality in .NET projects.
 - A tiny .NET 6 console application (same as Rust version), to quickly switch the display input source.
 - A tiny Rust CLI executable (same as .NET version), to quickly switch the display input source.
 
