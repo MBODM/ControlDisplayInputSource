@@ -7,8 +7,8 @@ The projects in this repository are tiny wrappers of a tool named [ControlMyMoni
 
 The wrappers are:
 - A tiny .NET 6 class library, to offer DDC VCP 60 functionality in .NET projects.
-- A tiny .NET 6 console application (same as Rust version), to quickly switch the display input source.
-- A tiny Rust CLI executable (same as .NET version), to quickly switch the display input source.
+- A tiny .NET 6 console application (same as the Rust version), to quickly switch the display input source.
+- A tiny Rust CLI executable (same as the .NET version), to quickly switch the display input source.
 
 ### Why it exists
 
