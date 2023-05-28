@@ -24,9 +24,8 @@ It is possible to change the input source of a display/monitor with software (in
 
 @Nir: Thanks a lot for this great tool!
 
+### Requirements
+
+Todo: self-contained / framework-dependent (just copy/paste it from my other tools), Rust binary, etc.
+
 #### Have fun.
-
-
-
-
-
