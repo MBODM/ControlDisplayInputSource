@@ -18,7 +18,7 @@ It is possible to change the input source of a display/monitor with software (in
 
 - As mentioned above, i use a tool name "_ControlMyMonitor_" for the real DDC stuff. The tool is written by Nir Sofer (NirSoft) and distributed under a Freeware license. So please respect the license terms!
 - You can find all information about the tool or the license at --> https://www.nirsoft.net/utils/control_my_monitor.html
-- Please also have a look into the Readme.txt file inside the [Tool](tool) folder in this repository.
+- Please also have a look into the Readme.txt file inside the [Tool](https://github.com/mbodm/ControlDisplayInputSource/tool) folder in this repository.
 
 @Nir: Thanks a lot for this great tool!
 
