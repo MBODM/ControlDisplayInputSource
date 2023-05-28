@@ -14,7 +14,7 @@ The wrappers are:
 
 It is possible to change the input source of a display/monitor with software (in contrast to the hardware buttons of your display), by using DDC commands. The DDC VCP 60 command is the key component here. I was looking for a simple way to quickly switch my display´s input source between 2 computers, with just one click. I found above mentioned tool and wrote some wrappers around it, for my personal use. There was a reason why i not just used some batch script. The reason has to do with some weird behaviour of Windows, when you want to create a .lnk to a batch file and stick it to the Windows TaskBar.
 
-### Used external tool (ControlMyMonitor)
+### Used external tool
 
 - As mentioned above, i use a tool name "_ControlMyMonitor_" for the real DDC stuff. The tool is written by Nir Sofer (NirSoft) and distributed under a Freeware license. So please respect the license terms!
 - You can find all information about the tool or the license at --> https://www.nirsoft.net/utils/control_my_monitor.html
