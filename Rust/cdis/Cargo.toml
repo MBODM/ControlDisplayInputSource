@@ -6,6 +6,8 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+ddc = "0.2.2"
+ddc-winapi = "0.2.1"
 
 #MBODM# To decrease the size of the executable the following "[profile.release]" block was copy-pasted from:
 #MBODM# -> https://stackoverflow.com/questions/29008127/why-are-rust-executables-so-huge
