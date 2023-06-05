@@ -1,4 +1,3 @@
-use ddc_winapi::Monitor;
 use std::process::ExitCode;
 
 mod display;
@@ -8,8 +7,8 @@ pub const APP_TITLE: &str = "ChangeDisplayInputSource";
 pub const RELEASE_DATE: &str = "05/2023";
 
 fn run() -> Result<bool, String> {
-    let monitors = Monitor::enumerate().map_err(|_| "Could not enumerate monitors.")?;
-    let display_names = display::get_names_of_detected_displays(&monitors)?;
+    display::init()?;
+    let display_names = display::get_displays_names()?;
     for display_name in display_names {
         println!("{}", display_name);
     }
