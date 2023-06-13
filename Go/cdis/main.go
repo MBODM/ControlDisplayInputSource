@@ -18,7 +18,7 @@ func main() {
 	fmt.Println("Desktop window handle:", hWindow)
 
 	fmt.Println("Get monitor handle...")
-	var hMonitor, err = display2.MonitorFromWindow(hWindow, display2.MONITOR_DEFAULTTOPRIMARY)
+	var hMonitor, err = display2.MonitorFromWindow(17 /*hWindow*/, display2.MONITOR_DEFAULTTOPRIMARY)
 	if err != nil {
 		fmt.Println(err.Error())
 		os.Exit(55)

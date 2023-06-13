@@ -59,6 +59,16 @@ func MonitorFromWindow(hwnd HWND, dwFlags uint32) (HMONITOR, error) {
 	)
 	if err != nil {
 
+		// Was mach ich hier ?
+		if syserr, ok := err.(syscall.Errno); ok {
+
+			fmt.Println("RABAZZZ:", uint64(syserr))
+			if syserr == 1060 {
+				//Do whatever
+			}
+		}
+
+		//fmt.Println("RABAZZZ:", int64(syscall.Errno))
 		return HMONITOR(0), fmt.Errorf("Error in MonitorFromWindow() function: %w", err)
 	}
 	return HMONITOR(ret), nil
