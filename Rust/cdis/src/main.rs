@@ -11,6 +11,11 @@ fn run() -> Result<bool, String> {
     let mut dc = DisplayControl::new();
     dc.init()?;
 
+    dc.test();
+    println!();
+    return Err(String::from("Just a test."));
+
+
     let multi = dc.has_multiple_displays()?;
     println!(
         "Has multiple displays:      {}",

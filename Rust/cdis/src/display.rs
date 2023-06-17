@@ -1,5 +1,10 @@
+use std::os::windows::prelude::OsStringExt;
+
 use ddc::Ddc;
 use ddc_winapi::Monitor;
+use winapi::shared::windef::HMONITOR;
+
+use crate::print;
 
 #[derive(Debug)]
 pub struct DisplayControl {
@@ -91,6 +96,52 @@ impl DisplayControl {
             .set_vcp_feature(0x60, value)
             .map_err(|_| "Could not set DDC VCP 60 value.")?;
         Ok(())
+    }
+
+    pub fn test(&mut self) {
+        let window_handle: winapi::shared::windef::HWND =
+            unsafe { winapi::um::winuser::GetDesktopWindow() };
+        println!("TEST: GetDesktopWindow() --> window handle (HWND) --> {:?}", window_handle);
+        let monitor_handle: HMONITOR = unsafe {
+            winapi::um::winuser::MonitorFromWindow(
+                window_handle,
+                winapi::um::winuser::MONITOR_DEFAULTTOPRIMARY,
+            )
+        };
+        println!("TEST: MonitorFromWindow() --> monitor handle (HMONITOR) --> {:?}", monitor_handle);
+        let hmonitors = ddc_winapi::enumerate_monitors().unwrap();
+        let first_enum_mon = hmonitors[0];
+        
+        println!("TEST: ddc_winapi::enumerate_monitors() --> first field [0] (HMONITOR) --> {:?}", first_enum_mon);
+        let phys_mons = ddc_winapi::get_physical_monitors_from_hmonitor(first_enum_mon).unwrap();
+
+        println!("WUFF - The physical monitor list:");
+        for (pos, _) in phys_mons.iter().enumerate() {
+            println!("  - Position: {}", pos);
+            let fuzz = phys_mons[pos].hPhysicalMonitor;
+            println!("  - Element at Position {}: {:?}", pos, fuzz);
+        }
+
+       
+
+
+
+
+
+
+        // let first_phy_mon = phys_mons[0];
+        // let str_ptr = std::ptr::addr_of!(first_phy_mon.szPhysicalMonitorDescription);
+        // let desc = match (str_ptr as usize) & (std::mem::align_of::<u16>() - 1) {
+        //     0 => std::borrow::Cow::Borrowed(unsafe { &*str_ptr }),
+        //     _ => std::borrow::Cow::Owned(first_phy_mon.szPhysicalMonitorDescription),
+        // };
+        // let desc = match widestring::WideCStr::from_slice_truncate(&desc[..]) {
+        //     Ok(cstr) => cstr.to_string_lossy(),
+        //     Err(_) => widestring::WideStr::from_slice(&desc[..]).to_string_lossy(),
+        // };
+        // println!("MY hMonitor (HMONITOR): {:?}", hmonitors[0]);
+        // //print!("MY hPhysicalMonitor (HANDLE): {:?}", physmon);
+        // println!("MY szPhysicalMonitorDescription: {}", desc);
     }
 
     fn check_init(&self) -> Result<(), String> {

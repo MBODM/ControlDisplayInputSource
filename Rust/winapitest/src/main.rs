@@ -2,7 +2,7 @@ use std::mem;
 
 use windows::{
     core::*, Win32::Devices::Display::*, Win32::Foundation::*, Win32::Graphics::Gdi::*,
-    Win32::UI::WindowsAndMessaging::*,
+    Win32::UI::WindowsAndMessaging::*, s, w,
 };
 
 fn main() -> Result<()> {
@@ -34,7 +34,7 @@ fn main() -> Result<()> {
         println!("{} result.rcMonitor:  {:?}", api_fn_name, mi.rcMonitor);
         println!("{} result.rcWork:     {:?}", api_fn_name, mi.rcWork);
         println!("{} result.dwFlags:    {:?}", api_fn_name, mi.dwFlags);
-        let sz_device = String::from_utf16(mon_info.szDevice.as_slice()).unwrap();
+        let sz_device = String::from_utf16_lossy(mon_info.szDevice.as_slice());
         println!("{} result.szDevice:   {}", api_fn_name, sz_device);
         let is_primary = mon_info.monitorInfo.dwFlags == MONITORINFOF_PRIMARY;
         let is_primary_string = is_primary.to_string().to_uppercase();
@@ -52,28 +52,30 @@ fn main() -> Result<()> {
         println!("----------------------------------------------------------------------");
         // GetPhysicalMonitorsFromHMONITOR
         api_fn_name = String::from("GetPhysicalMonitorsFromHMONITOR()");
-        
-        let usi = physmons_num as usize;
-
-        println!("usi {}", usi);
-        
-        let mut physmons: Vec<PHYSICAL_MONITOR> = Vec::with_capacity(1);
-
-        println!("vec len {}", physmons.len());
-        println!("vec cap {}", physmons.capacity());
-
-        let body_slice: &mut [PHYSICAL_MONITOR] = &mut physmons[0..1];
-
-        api_fn_bret = GetPhysicalMonitorsFromHMONITOR(h_monitor,body_slice);
+        let physmons_vec_cap = physmons_num as usize;
+        let mut physmons_vec: Vec<PHYSICAL_MONITOR> = Vec::with_capacity(physmons_vec_cap);
+        for _ in 0..physmons_num {
+            physmons_vec.push(PHYSICAL_MONITOR::default());
+        }
+        let physmons_slice = physmons_vec.as_mut_slice();
+        api_fn_bret = GetPhysicalMonitorsFromHMONITOR(h_monitor, physmons_slice);
         println!("{} return value:          {:?}", api_fn_name, api_fn_bret);
-        
-        
-        
-        
-        
-        println!("{} result array length:   {:?}", api_fn_name, physmons.len());
+        println!(
+            "{} result array length:   {:?}",
+            api_fn_name,
+            physmons_slice.len()
+        );
         println!("GetLastError() return value:         {:?}", GetLastError());
         println!("----------------------------------------------------------------------");
+        // Result
+        let mut prim_physmon = physmons_slice[0];
+        let prim_physmon_handle = prim_physmon.hPhysicalMonitor;
+        //let mutter = prim_physmon.szPhysicalMonitorDescription.align_to();
+        //let hs = String::from(prim_physmon.szPhysicalMonitorDescription);
+        //let hs = HSTRING::from();
+        //let prim_physmon_desc = String::from_utf16_lossy(mutter.0);
+        println!("Primary physical monitor handle:  {:?}", prim_physmon_handle);
+        println!("Primary physical monitor desc:    {:?}", prim_physmon_desc);
     }
     println!("Have a nice day.");
     Ok(())
