@@ -101,33 +101,49 @@ impl DisplayControl {
     pub fn test(&mut self) {
         let window_handle: winapi::shared::windef::HWND =
             unsafe { winapi::um::winuser::GetDesktopWindow() };
-        println!("TEST: GetDesktopWindow() --> window handle (HWND) --> {:?}", window_handle);
+        println!(
+            "TEST: GetDesktopWindow()  --> window handle  (HWND)     --> {:?}",
+            window_handle
+        );
         let monitor_handle: HMONITOR = unsafe {
             winapi::um::winuser::MonitorFromWindow(
                 window_handle,
                 winapi::um::winuser::MONITOR_DEFAULTTOPRIMARY,
             )
         };
-        println!("TEST: MonitorFromWindow() --> monitor handle (HMONITOR) --> {:?}", monitor_handle);
+        println!(
+            "TEST: MonitorFromWindow() --> monitor handle (HMONITOR) --> {:?}",
+            monitor_handle
+        );
         let hmonitors = ddc_winapi::enumerate_monitors().unwrap();
-        let first_enum_mon = hmonitors[0];
-        
-        println!("TEST: ddc_winapi::enumerate_monitors() --> first field [0] (HMONITOR) --> {:?}", first_enum_mon);
-        let phys_mons = ddc_winapi::get_physical_monitors_from_hmonitor(first_enum_mon).unwrap();
+        println!("TEST: ddc_winapi::enumerate_monitors() --> List of all HMONITORs:");
+        for (i, hmonitor) in hmonitors.iter().enumerate() {
+            println!("TEST:   [{}] {:?}", i, hmonitor);
 
-        println!("WUFF - The physical monitor list:");
-        for (pos, _) in phys_mons.iter().enumerate() {
-            println!("  - Position: {}", pos);
-            let fuzz = phys_mons[pos].hPhysicalMonitor;
-            println!("  - Element at Position {}: {:?}", pos, fuzz);
+            let mut monitor_info: winapi::um::winuser::MONITORINFOEXW =
+                unsafe { std::mem::zeroed() };
+            monitor_info.cbSize = std::mem::size_of::<winapi::um::winuser::MONITORINFOEXW>() as u32;
+            let monitor_info_ptr = <*mut _>::cast(&mut monitor_info);
+            let result =
+                unsafe { winapi::um::winuser::GetMonitorInfoW(hmonitor.clone(), monitor_info_ptr) };
+            if result == winapi::shared::minwindef::TRUE {
+                println!(
+                    "TEST:   GetMonitorInfo().dwFlags for {:?} HMONITOR: {:?}",
+                    hmonitor, monitor_info.dwFlags
+                );
+                // if monitor_info.dwFlags == winapi::um::winuser::MONITORINFOF_PRIMARY {
+
+                // }
+            }
         }
+        // let phys_mons = ddc_winapi::get_physical_monitors_from_hmonitor(first_enum_mon).unwrap();
 
-       
-
-
-
-
-
+        // println!("WUFF - The physical monitor list:");
+        // for (pos, _) in phys_mons.iter().enumerate() {
+        //     println!("  - Position: {}", pos);
+        //     let fuzz = phys_mons[pos].hPhysicalMonitor;
+        //     println!("  - Element at Position {}: {:?}", pos, fuzz);
+        // }
 
         // let first_phy_mon = phys_mons[0];
         // let str_ptr = std::ptr::addr_of!(first_phy_mon.szPhysicalMonitorDescription);
