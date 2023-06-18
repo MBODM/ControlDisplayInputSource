@@ -118,7 +118,7 @@ impl DisplayControl {
         let hmonitors = ddc_winapi::enumerate_monitors().unwrap();
         println!("TEST: ddc_winapi::enumerate_monitors() --> List of all HMONITORs:");
         for (i, hmonitor) in hmonitors.iter().enumerate() {
-            println!("TEST:   [{}] {:?}", i, hmonitor);
+            println!("TEST:   [{}] HMONITOR {:?}", i, hmonitor);
             let mut monitor_info: winapi::um::winuser::MONITORINFOEXW =
                 unsafe { std::mem::zeroed() };
             monitor_info.cbSize = std::mem::size_of::<winapi::um::winuser::MONITORINFOEXW>() as u32;
@@ -132,7 +132,10 @@ impl DisplayControl {
                 );
                 if monitor_info.dwFlags == winapi::um::winuser::MONITORINFOF_PRIMARY {
                     println!(" (1 --> This means it is the PRIMARY!)")
+                }else {
+                    println!(" (0 --> This means it is NOT the PRIMARY!)")
                 }
+
                 println!("TEST:   List of PHYSICAL_MONITOR for {:?} HMONITOR:", hmonitor);
                 let phys_mon_vec = ddc_winapi::get_physical_monitors_from_hmonitor(hmonitor.clone()).unwrap();
                 for (num, phy_mon) in phys_mon_vec.iter().enumerate() {
