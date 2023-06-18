@@ -126,18 +126,18 @@ impl DisplayControl {
             let result =
                 unsafe { winapi::um::winuser::GetMonitorInfoW(hmonitor.clone(), monitor_info_ptr) };
             if result == winapi::shared::minwindef::TRUE {
-                println!(
+                print!(
                     "TEST:   GetMonitorInfo().dwFlags for {:?} HMONITOR: {:?}",
                     hmonitor, monitor_info.dwFlags
                 );
                 if monitor_info.dwFlags == winapi::um::winuser::MONITORINFOF_PRIMARY {
-                    println!("TEST:   List of PHYSICAL_MONITOR for {:?} HMONITOR:", hmonitor);
-                    let phys_mon_vec = ddc_winapi::get_physical_monitors_from_hmonitor(hmonitor.clone()).unwrap();
-                    for (num, phy_mon) in phys_mon_vec.iter().enumerate() {
-                        let m = unsafe { Monitor::new(*phy_mon) };
-                        println!("TEST:     [{}] PHYSICAL_MONITOR.hPhysicalMonitor (HANDLE): {:?}", num, m.handle())
-                    }
-
+                    println!(" (1 --> This means it is the PRIMARY!)")
+                }
+                println!("TEST:   List of PHYSICAL_MONITOR for {:?} HMONITOR:", hmonitor);
+                let phys_mon_vec = ddc_winapi::get_physical_monitors_from_hmonitor(hmonitor.clone()).unwrap();
+                for (num, phy_mon) in phys_mon_vec.iter().enumerate() {
+                    let m = unsafe { Monitor::new(*phy_mon) };
+                    println!("TEST:     [{}] PHYSICAL_MONITOR.hPhysicalMonitor (HANDLE): {:?}", num, m.handle())
                 }
             }
         }
